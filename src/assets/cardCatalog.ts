@@ -1,22 +1,27 @@
-import cdPng from '@/assets/icons3d/cd.png';
-import circuitBoardPng from '@/assets/icons3d/circuit-board.png';
-import coolingFanPng from '@/assets/icons3d/cooling-fan.png';
-import cpuChipPng from '@/assets/icons3d/cpu-chip.png';
-import floppyDiskPng from '@/assets/icons3d/floppy-disk.png';
-import gpuCardPng from '@/assets/icons3d/gpu-card.png';
-import hardDrivePng from '@/assets/icons3d/hard-drive.png';
-import hdmiCablePng from '@/assets/icons3d/hdmi-cable.png';
-import monitorSilhouettePng from '@/assets/icons3d/monitor-silhouette.png';
-import motherboardPng from '@/assets/icons3d/motherboard.png';
-import ramModulePng from '@/assets/icons3d/ram-module.png';
-import samsungLaptopSilhouettePng from '@/assets/icons3d/samsung-laptop-silhouette.png';
-import ssdDrivePng from '@/assets/icons3d/ssd-drive.png';
-import usbDrivePng from '@/assets/icons3d/usb-drive.png';
-
-import ethernetPortSvg from '@/assets/cards/ethernet-port.svg';
-import keyboardSvg from '@/assets/cards/keyboard.svg';
-import mouseSvg from '@/assets/cards/mouse.svg';
-import serverRackSvg from '@/assets/cards/server-rack.svg';
+import chipsetRamStickSvg from '@/assets/cards-renamed/chipset-ram-stick.svg';
+import storageNvmeBladeSvg from '@/assets/cards-renamed/storage-nvme-blade.svg';
+import storageSataDriveSvg from '@/assets/cards-renamed/storage-sata-drive.svg';
+import processorCoreChipSvg from '@/assets/cards-renamed/processor-core-chip.svg';
+import graphicsGpuBoardSvg from '@/assets/cards-renamed/graphics-gpu-board.svg';
+import boardMainMotherboardSvg from '@/assets/cards-renamed/board-main-motherboard.svg';
+import boardLogicCircuitSvg from '@/assets/cards-renamed/board-logic-circuit.svg';
+import thermalCoolingFanSvg from '@/assets/cards-renamed/thermal-cooling-fan.svg';
+import portableUsbDriveSvg from '@/assets/cards-renamed/portable-usb-drive.svg';
+import connectorHdmiCableSvg from '@/assets/cards-renamed/connector-hdmi-cable.svg';
+import connectorEthernetPortSvg from '@/assets/cards-renamed/connector-ethernet-port.svg';
+import displayMonitorScreenSvg from '@/assets/cards-renamed/display-monitor-screen.svg';
+import deviceSamsungLaptopSvg from '@/assets/cards-renamed/device-samsung-laptop.svg';
+import storageSamsungSsdSvg from '@/assets/cards-renamed/storage-samsung-ssd.svg';
+import memoryModuleStickSvg from '@/assets/cards-renamed/memory-module-stick.svg';
+import storageHardDiskSvg from '@/assets/cards-renamed/storage-hard-disk.svg';
+import legacyFloppyDiskSvg from '@/assets/cards-renamed/legacy-floppy-disk.svg';
+import legacyDvdDiscSvg from '@/assets/cards-renamed/legacy-dvd-disc.svg';
+import legacyCdDiscSvg from '@/assets/cards-renamed/legacy-cd-disc.svg';
+import digitalBinaryCoreSvg from '@/assets/cards-renamed/digital-binary-core.svg';
+import siliconMicrochipSvg from '@/assets/cards-renamed/silicon-microchip.svg';
+import inputKeyboardSvg from '@/assets/cards-renamed/input-keyboard.svg';
+import inputMouseSvg from '@/assets/cards-renamed/input-mouse.svg';
+import infrastructureServerRackSvg from '@/assets/cards-renamed/infrastructure-server-rack.svg';
 
 export interface CardArt {
   id: string;
@@ -28,122 +33,122 @@ const CARD_ART: Record<string, CardArt> = {
   'ram-module': {
     id: 'ram-module',
     label: 'RAM Module',
-    src: ramModulePng,
+    src: chipsetRamStickSvg,
   },
   'nvme-ssd': {
     id: 'nvme-ssd',
     label: 'NVMe SSD',
-    src: ssdDrivePng,
+    src: storageNvmeBladeSvg,
   },
   'sata-ssd': {
     id: 'sata-ssd',
     label: 'SATA SSD',
-    src: ssdDrivePng,
+    src: storageSataDriveSvg,
   },
   'cpu-chip': {
     id: 'cpu-chip',
     label: 'CPU Chip',
-    src: cpuChipPng,
+    src: processorCoreChipSvg,
   },
   'gpu-card': {
     id: 'gpu-card',
     label: 'GPU Card',
-    src: gpuCardPng,
+    src: graphicsGpuBoardSvg,
   },
   motherboard: {
     id: 'motherboard',
     label: 'Motherboard',
-    src: motherboardPng,
+    src: boardMainMotherboardSvg,
   },
   'circuit-board': {
     id: 'circuit-board',
     label: 'Circuit Board',
-    src: circuitBoardPng,
+    src: boardLogicCircuitSvg,
   },
   'cooling-fan': {
     id: 'cooling-fan',
     label: 'Cooling Fan',
-    src: coolingFanPng,
+    src: thermalCoolingFanSvg,
   },
   'usb-drive': {
     id: 'usb-drive',
     label: 'USB Flash Drive',
-    src: usbDrivePng,
+    src: portableUsbDriveSvg,
   },
   'hdmi-cable': {
     id: 'hdmi-cable',
     label: 'HDMI Cable',
-    src: hdmiCablePng,
+    src: connectorHdmiCableSvg,
   },
   'ethernet-port': {
     id: 'ethernet-port',
     label: 'Ethernet Port',
-    src: ethernetPortSvg,
+    src: connectorEthernetPortSvg,
   },
   monitor: {
     id: 'monitor',
     label: 'Monitor',
-    src: monitorSilhouettePng,
+    src: displayMonitorScreenSvg,
   },
   'galaxy-book': {
     id: 'galaxy-book',
     label: 'Galaxy Laptop',
-    src: samsungLaptopSilhouettePng,
+    src: deviceSamsungLaptopSvg,
   },
   'samsung-ssd': {
     id: 'samsung-ssd',
     label: 'Samsung SSD',
-    src: ssdDrivePng,
+    src: storageSamsungSsdSvg,
   },
   'memory-stick': {
     id: 'memory-stick',
     label: 'Memory Stick',
-    src: ramModulePng,
+    src: memoryModuleStickSvg,
   },
   'hard-drive': {
     id: 'hard-drive',
     label: 'Hard Drive',
-    src: hardDrivePng,
+    src: storageHardDiskSvg,
   },
   'floppy-disk': {
     id: 'floppy-disk',
     label: 'Floppy Disk',
-    src: floppyDiskPng,
+    src: legacyFloppyDiskSvg,
   },
   'dvd-disc': {
     id: 'dvd-disc',
     label: 'DVD Disc',
-    src: cdPng,
+    src: legacyDvdDiscSvg,
   },
   'cd-disc': {
     id: 'cd-disc',
     label: 'CD Disc',
-    src: cdPng,
+    src: legacyCdDiscSvg,
   },
   'binary-core': {
     id: 'binary-core',
     label: 'Binary Core',
-    src: circuitBoardPng,
+    src: digitalBinaryCoreSvg,
   },
   microchip: {
     id: 'microchip',
     label: 'Microchip',
-    src: cpuChipPng,
+    src: siliconMicrochipSvg,
   },
   keyboard: {
     id: 'keyboard',
     label: 'Keyboard',
-    src: keyboardSvg,
+    src: inputKeyboardSvg,
   },
   mouse: {
     id: 'mouse',
     label: 'Mouse',
-    src: mouseSvg,
+    src: inputMouseSvg,
   },
   'server-rack': {
     id: 'server-rack',
     label: 'Server Rack',
-    src: serverRackSvg,
+    src: infrastructureServerRackSvg,
   },
 };
 
@@ -153,6 +158,6 @@ export const getCardArt = (id: string): CardArt => {
   return CARD_ART[id] ?? {
     id,
     label: id.replace(/-/g, ' '),
-    src: ramModulePng,
+    src: chipsetRamStickSvg,
   };
 };

@@ -299,3 +299,45 @@
     animation: none;
   }
 }
+
+@media (max-height: 840px) {
+  .hud {
+    gap: 8px;
+    padding: 8px 12px;
+  }
+
+  .hud__top {
+    gap: 8px;
+  }
+
+  .hud__center-pill {
+    padding: 8px 10px;
+    gap: 6px;
+  }
+
+  .hud__timer-value {
+    font-size: clamp(1.35rem, 3vw, 2.2rem);
+  }
+
+  .hud__score {
+    font-size: clamp(1.6rem, 3.5vw, 2.5rem);
+  }
+
+  .hud__level-badge {
+    min-width: 54px;
+    min-height: 54px;
+  }
+
+  .hud__bottom {
+    gap: 8px;
+  }
+
+  .hud__stat {
+    min-width: 72px;
+    padding: 4px 8px;
+  }
+
+  .hud__stat-value {
+    font-size: 16px;
+  }
+}

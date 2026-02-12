@@ -84,8 +84,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 60vh;
-  padding: 14px clamp(10px, 2vw, 24px) 20px;
+  min-height: 0;
+  height: 100%;
+  padding: clamp(4px, 1vh, 12px) clamp(8px, 2vw, 20px) clamp(8px, 1.6vh, 16px);
+  overflow: hidden;
 }
 
 .game-screen__preview-overlay {
@@ -450,8 +452,15 @@
   }
 
   .game-screen__game-area {
-    min-height: 54vh;
-    padding-top: 8px;
+    min-height: 0;
+    padding-top: 4px;
+  }
+}
+
+@media (max-height: 840px) {
+  .game-screen__game-area {
+    padding-top: 2px;
+    padding-bottom: 8px;
   }
 }
 

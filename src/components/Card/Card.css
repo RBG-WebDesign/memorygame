@@ -10,7 +10,10 @@
 
 .card {
   position: relative;
-  width: 100%;
+  width: auto;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
   aspect-ratio: 3/4;
   cursor: pointer;
   perspective: 1000px;
@@ -300,7 +303,7 @@
    ============================================================================ */
 
 .card--small {
-  max-width: 86px;
+  max-width: 100%;
 }
 
 .card--small .card__art {
@@ -309,7 +312,7 @@
 }
 
 .card--medium {
-  max-width: 126px;
+  max-width: 100%;
 }
 
 .card--medium .card__art {
@@ -318,7 +321,7 @@
 }
 
 .card--large {
-  max-width: 176px;
+  max-width: 100%;
 }
 
 .card--large .card__art {
