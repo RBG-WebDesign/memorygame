@@ -145,13 +145,15 @@ export const flipCard = (state: GameState, cardId: string): Partial<GameState> |
   if (!canFlipCard(state, cardId)) return null;
 
   const newFlippedCards = [...state.flippedCards, cardId];
+  const isAttemptCompleted = newFlippedCards.length === 2;
 
   return {
     cards: state.cards.map(card =>
       card.id === cardId ? { ...card, isFlipped: true } : card
     ),
     flippedCards: newFlippedCards,
-    moveCount: state.moveCount + 1,
+    // Count one move per pair attempt, not per individual card flip.
+    moveCount: state.moveCount + (isAttemptCompleted ? 1 : 0),
   };
 };
 

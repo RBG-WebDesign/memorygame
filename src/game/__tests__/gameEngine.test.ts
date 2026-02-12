@@ -57,7 +57,7 @@ describe('Game Engine', () => {
         it('should update state when flipping a card', () => {
             const result = flipCard(mockState, 'card1') as Partial<GameState>;
             expect(result.flippedCards).toContain('card1');
-            expect(result.moveCount).toBe(1);
+            expect(result.moveCount).toBe(0);
 
             const flippedCard = result.cards?.find(c => c.id === 'card1');
             expect(flippedCard?.isFlipped).toBe(true);
