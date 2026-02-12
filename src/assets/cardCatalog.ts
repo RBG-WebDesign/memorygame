@@ -1,19 +1,19 @@
-import ramModulePng from '@/assets/icons3d/ram-module.png';
-import ssdDrivePng from '@/assets/icons3d/ssd-drive.png';
-import cpuChipPng from '@/assets/icons3d/cpu-chip.png';
-import gpuCardPng from '@/assets/icons3d/gpu-card.png';
-import motherboardPng from '@/assets/icons3d/motherboard.png';
-import coolingFanPng from '@/assets/icons3d/cooling-fan.png';
-import usbDrivePng from '@/assets/icons3d/usb-drive.png';
-import hardDrivePng from '@/assets/icons3d/hard-drive.png';
-import floppyDiskPng from '@/assets/icons3d/floppy-disk.png';
-import cdPng from '@/assets/icons3d/cd.png';
-import hdmiCablePng from '@/assets/icons3d/hdmi-cable.png';
-import circuitBoardPng from '@/assets/icons3d/circuit-board.png';
-import binaryPatternPng from '@/assets/icons3d/binary-pattern.png';
-import samsungLaptopSilhouettePng from '@/assets/icons3d/samsung-laptop-silhouette.png';
-import monitorSilhouettePng from '@/assets/icons3d/monitor-silhouette.png';
-import memoryChipPng from '@/assets/icons3d/memory-chip.png';
+import ramModuleSvg from '@/assets/cards-vivid/ram-module.svg';
+import ssdDriveSvg from '@/assets/cards-vivid/ssd-drive.svg';
+import cpuChipSvg from '@/assets/cards-vivid/cpu-chip.svg';
+import gpuCardSvg from '@/assets/cards-vivid/gpu-card.svg';
+import motherboardSvg from '@/assets/cards-vivid/motherboard.svg';
+import coolingFanSvg from '@/assets/cards-vivid/cooling-fan.svg';
+import usbDriveSvg from '@/assets/cards-vivid/usb-drive.svg';
+import hardDriveSvg from '@/assets/cards-vivid/hard-drive.svg';
+import floppyDiskSvg from '@/assets/cards-vivid/floppy-disk.svg';
+import cdSvg from '@/assets/cards-vivid/cd.svg';
+import hdmiCableSvg from '@/assets/cards-vivid/hdmi-cable.svg';
+import circuitBoardSvg from '@/assets/cards-vivid/circuit-board.svg';
+import binaryPatternSvg from '@/assets/cards-vivid/binary-pattern.svg';
+import samsungLaptopSilhouetteSvg from '@/assets/cards-vivid/samsung-laptop-silhouette.svg';
+import monitorSilhouetteSvg from '@/assets/cards-vivid/monitor-silhouette.svg';
+import memoryChipSvg from '@/assets/cards-vivid/memory-chip.svg';
 
 export interface CardArt {
   id: string;
@@ -25,82 +25,82 @@ const CARD_ART: Record<string, CardArt> = {
   'ram-module': {
     id: 'ram-module',
     label: 'RAM Module',
-    src: ramModulePng,
+    src: ramModuleSvg,
   },
   'ssd-drive': {
     id: 'ssd-drive',
     label: 'SSD Drive',
-    src: ssdDrivePng,
+    src: ssdDriveSvg,
   },
   'cpu-chip': {
     id: 'cpu-chip',
     label: 'CPU Chip',
-    src: cpuChipPng,
+    src: cpuChipSvg,
   },
   'gpu-card': {
     id: 'gpu-card',
     label: 'GPU Card',
-    src: gpuCardPng,
+    src: gpuCardSvg,
   },
   motherboard: {
     id: 'motherboard',
     label: 'Motherboard',
-    src: motherboardPng,
+    src: motherboardSvg,
   },
   'circuit-board': {
     id: 'circuit-board',
     label: 'Circuit Board',
-    src: circuitBoardPng,
+    src: circuitBoardSvg,
   },
   'cooling-fan': {
     id: 'cooling-fan',
     label: 'Cooling Fan',
-    src: coolingFanPng,
+    src: coolingFanSvg,
   },
   'usb-drive': {
     id: 'usb-drive',
     label: 'USB Flash Drive',
-    src: usbDrivePng,
+    src: usbDriveSvg,
   },
   'hdmi-cable': {
     id: 'hdmi-cable',
     label: 'HDMI Cable',
-    src: hdmiCablePng,
+    src: hdmiCableSvg,
   },
   'hard-drive': {
     id: 'hard-drive',
     label: 'Hard Drive',
-    src: hardDrivePng,
+    src: hardDriveSvg,
   },
   'floppy-disk': {
     id: 'floppy-disk',
     label: 'Floppy Disk',
-    src: floppyDiskPng,
+    src: floppyDiskSvg,
   },
   cd: {
     id: 'cd',
     label: 'CD Disc',
-    src: cdPng,
+    src: cdSvg,
   },
   'binary-pattern': {
     id: 'binary-pattern',
     label: 'Binary Pattern',
-    src: binaryPatternPng,
+    src: binaryPatternSvg,
   },
   'samsung-laptop-silhouette': {
     id: 'samsung-laptop-silhouette',
     label: 'Samsung Laptop',
-    src: samsungLaptopSilhouettePng,
+    src: samsungLaptopSilhouetteSvg,
   },
   'monitor-silhouette': {
     id: 'monitor-silhouette',
     label: 'Monitor',
-    src: monitorSilhouettePng,
+    src: monitorSilhouetteSvg,
   },
   'memory-chip': {
     id: 'memory-chip',
     label: 'Memory Chip',
-    src: memoryChipPng,
+    src: memoryChipSvg,
   },
 };
 
@@ -110,6 +110,6 @@ export const getCardArt = (id: string): CardArt => {
   return CARD_ART[id] ?? {
     id,
     label: id.replace(/-/g, ' '),
-    src: ramModulePng,
+    src: ramModuleSvg,
   };
 };
