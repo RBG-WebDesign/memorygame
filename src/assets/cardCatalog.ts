@@ -1,4 +1,3 @@
-import binaryPatternPng from '@/assets/icons3d/binary-pattern.png';
 import cdPng from '@/assets/icons3d/cd.png';
 import circuitBoardPng from '@/assets/icons3d/circuit-board.png';
 import coolingFanPng from '@/assets/icons3d/cooling-fan.png';
@@ -7,7 +6,6 @@ import floppyDiskPng from '@/assets/icons3d/floppy-disk.png';
 import gpuCardPng from '@/assets/icons3d/gpu-card.png';
 import hardDrivePng from '@/assets/icons3d/hard-drive.png';
 import hdmiCablePng from '@/assets/icons3d/hdmi-cable.png';
-import memoryChipPng from '@/assets/icons3d/memory-chip.png';
 import monitorSilhouettePng from '@/assets/icons3d/monitor-silhouette.png';
 import motherboardPng from '@/assets/icons3d/motherboard.png';
 import ramModulePng from '@/assets/icons3d/ram-module.png';
@@ -125,12 +123,12 @@ const CARD_ART: Record<string, CardArt> = {
   'binary-core': {
     id: 'binary-core',
     label: 'Binary Core',
-    src: binaryPatternPng,
+    src: circuitBoardPng,
   },
   microchip: {
     id: 'microchip',
     label: 'Microchip',
-    src: memoryChipPng,
+    src: cpuChipPng,
   },
   keyboard: {
     id: 'keyboard',
@@ -158,4 +156,3 @@ export const getCardArt = (id: string): CardArt => {
     src: ramModulePng,
   };
 };
-
