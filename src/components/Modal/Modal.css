@@ -1,0 +1,232 @@
+/**
+ * Modal Component Styles
+ * Smooth animated modal overlay
+ */
+
+/* ============================================================================
+   MODAL CONTAINER
+   ============================================================================ */
+
+.modal {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+  animation: modalFadeIn 0.3s ease-out;
+}
+
+@keyframes modalFadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* ============================================================================
+   MODAL OVERLAY
+   ============================================================================ */
+
+.modal__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* ============================================================================
+   MODAL CONTENT
+   ============================================================================ */
+
+.modal__content {
+  position: relative;
+  width: 100%;
+  max-height: 90vh;
+  background: linear-gradient(
+    145deg,
+    #1a1a2e 0%,
+    #16213e 50%,
+    #0f3460 100%
+  );
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.05);
+  overflow: hidden;
+  animation: modalSlideIn 0.3s ease-out;
+  display: flex;
+  flex-direction: column;
+}
+
+@keyframes modalSlideIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.9) translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Size variants */
+.modal--small .modal__content {
+  max-width: 320px;
+}
+
+.modal--medium .modal__content {
+  max-width: 480px;
+}
+
+.modal--large .modal__content {
+  max-width: 640px;
+}
+
+/* ============================================================================
+   MODAL HEADER
+   ============================================================================ */
+
+.modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modal__title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.modal__close {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 10px;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.modal__close:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+.modal__close:active {
+  transform: scale(0.95);
+}
+
+.modal__close svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* ============================================================================
+   MODAL BODY
+   ============================================================================ */
+
+.modal__body {
+  padding: 24px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+/* Custom scrollbar */
+.modal__body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modal__body::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 3px;
+}
+
+.modal__body::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+}
+
+.modal__body::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* ============================================================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================================================ */
+
+@media (max-width: 480px) {
+  .modal {
+    padding: 16px;
+    align-items: flex-end;
+  }
+  
+  .modal__content {
+    border-radius: 16px 16px 20px 20px;
+    max-height: 85vh;
+  }
+  
+  .modal__header {
+    padding: 16px 20px;
+  }
+  
+  .modal__title {
+    font-size: 18px;
+  }
+  
+  .modal__body {
+    padding: 20px;
+  }
+}
+
+@media (min-width: 768px) {
+  .modal__header {
+    padding: 24px 32px;
+  }
+  
+  .modal__title {
+    font-size: 24px;
+  }
+  
+  .modal__body {
+    padding: 32px;
+  }
+}
+
+/* ============================================================================
+   REDUCED MOTION
+   ============================================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .modal,
+  .modal__content {
+    animation: none;
+  }
+}
+
+/* ============================================================================
+   HIGH CONTRAST MODE
+   ============================================================================ */
+
+@media (prefers-contrast: high) {
+  .modal__content {
+    border-width: 2px;
+    border-color: rgba(255, 255, 255, 0.5);
+  }
+}

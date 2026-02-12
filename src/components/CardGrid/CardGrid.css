@@ -1,0 +1,206 @@
+/**
+ * CardGrid Component Styles
+ * Dynamic responsive grid with smooth animations
+ */
+
+/* ============================================================================
+   GRID CONTAINER
+   ============================================================================ */
+
+.card-grid {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.card-grid__container {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns, 4), 1fr);
+  grid-template-rows: repeat(var(--grid-rows, 2), 1fr);
+  gap: clamp(8px, 2vw, 16px);
+  width: 100%;
+  max-width: min(
+    calc(100vh * 1.06),
+    1160px
+  );
+  aspect-ratio: calc(var(--grid-columns) / var(--grid-rows) * 0.92);
+  margin: 0 auto;
+}
+
+/* ============================================================================
+   GRID CELLS
+   ============================================================================ */
+
+.card-grid__cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: 0;
+  
+  /* Staggered entrance animation */
+  animation: cellEntrance 0.4s ease-out backwards;
+  animation-delay: calc(var(--cell-index, 0) * 0.03s);
+}
+
+@keyframes cellEntrance {
+  0% {
+    opacity: 0;
+    transform: scale(0.8) translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* ============================================================================
+   LEVEL TRANSITION ANIMATION
+   ============================================================================ */
+
+.card-grid--transitioning .card-grid__cell {
+  animation: cellExit 0.3s ease-in forwards;
+}
+
+@keyframes cellExit {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+}
+
+/* ============================================================================
+   RESPONSIVE BREAKPOINTS
+   ============================================================================ */
+
+/* Small phones */
+@media (max-width: 360px) {
+  .card-grid {
+    padding: 8px;
+  }
+  
+  .card-grid__container {
+    gap: 6px;
+  }
+}
+
+/* Phones */
+@media (max-width: 480px) {
+  .card-grid {
+    padding: 8px;
+  }
+  
+  .card-grid__container {
+    gap: 10px;
+    max-width: 100%;
+  }
+}
+
+/* Tablets */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .card-grid {
+    padding: 24px;
+  }
+  
+  .card-grid__container {
+    gap: 16px;
+    max-width: 700px;
+  }
+}
+
+/* Large tablets / Small desktops */
+@media (min-width: 1024px) {
+  .card-grid {
+    padding: 18px;
+  }
+  
+  .card-grid__container {
+    gap: 22px;
+    max-width: 1180px;
+  }
+}
+
+/* Large desktops */
+@media (min-width: 1440px) {
+  .card-grid__container {
+    gap: 24px;
+    max-width: 1000px;
+  }
+}
+
+/* ============================================================================
+   LANDSCAPE ORIENTATION
+   ============================================================================ */
+
+@media (orientation: landscape) and (max-height: 600px) {
+  .card-grid {
+    padding: 8px;
+  }
+  
+  .card-grid__container {
+    gap: 6px;
+    max-width: min(90vh, 500px);
+  }
+}
+
+/* ============================================================================
+   HIGH DENSITY GRIDS (Many cards)
+   ============================================================================ */
+
+.card-grid--dense .card-grid__container {
+  gap: clamp(4px, 1vw, 8px);
+}
+
+.card-grid--dense .card-grid__cell {
+  animation-duration: 0.3s;
+  animation-delay: calc(var(--cell-index, 0) * 0.02s);
+}
+
+/* ============================================================================
+   PREVIEW MODE
+   ============================================================================ */
+
+.card-grid--preview .card-grid__cell {
+  pointer-events: none;
+}
+
+/* ============================================================================
+   REDUCED MOTION
+   ============================================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .card-grid__cell {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ============================================================================
+   DARK THEME ADJUSTMENTS
+   ============================================================================ */
+
+@media (prefers-color-scheme: dark) {
+  .card-grid {
+    /* No specific dark theme adjustments needed */
+  }
+}
+
+/* ============================================================================
+   SAFARI FIXES
+   ============================================================================ */
+
+@supports (-webkit-touch-callout: none) {
+  .card-grid__container {
+    /* Fix for Safari grid rendering */
+    display: -webkit-grid;
+  }
+}

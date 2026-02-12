@@ -1,0 +1,386 @@
+/**
+ * ResultsScreen Component Styles
+ * Score summary with confetti animation
+ */
+
+/* ============================================================================
+   SCREEN CONTAINER
+   ============================================================================ */
+
+.results-screen {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #000;
+}
+
+/* ============================================================================
+   BACKGROUND
+   ============================================================================ */
+
+.results-screen__bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.results-screen__gradient {
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(ellipse at 30% 20%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 80%, rgba(123, 44, 191, 0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(76, 175, 80, 0.05) 0%, transparent 70%);
+}
+
+/* Confetti Animation */
+.results-screen__confetti {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.results-screen__confetti-piece {
+  position: absolute;
+  left: var(--confetti-x);
+  top: -20px;
+  width: 10px;
+  height: 10px;
+  background: var(--confetti-color);
+  animation: confettiFall var(--confetti-duration) ease-out infinite;
+  animation-delay: var(--confetti-delay);
+}
+
+@keyframes confettiFall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+/* ============================================================================
+   CONTENT CONTAINER
+   ============================================================================ */
+
+.results-screen__content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  padding: 24px;
+  height: 100%;
+  overflow-y: auto;
+}
+
+/* ============================================================================
+   HEADER
+   ============================================================================ */
+
+.results-screen__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+}
+
+.results-screen__trophy {
+  width: 80px;
+  height: 80px;
+  color: #ffd700;
+  filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.5));
+  animation: trophyBounce 1s ease-out;
+}
+
+@keyframes trophyBounce {
+  0% {
+    transform: scale(0) rotate(-180deg);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2) rotate(10deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+.results-screen__trophy svg {
+  width: 100%;
+  height: 100%;
+}
+
+.results-screen__title {
+  font-size: clamp(1.5rem, 5vw, 2.5rem);
+  font-weight: 800;
+  color: #fff;
+  margin: 0;
+  text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+}
+
+.results-screen__subtitle {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ============================================================================
+   SCORE DISPLAY
+   ============================================================================ */
+
+.results-screen__score-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.results-screen__score-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+}
+
+.results-screen__score {
+  font-size: clamp(3rem, 10vw, 5rem);
+  font-weight: 800;
+  background: linear-gradient(135deg, #ffd700 0%, #ffed4a 50%, #ffd700 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 60px rgba(255, 215, 0, 0.3);
+  animation: scorePulse 2s ease-in-out infinite;
+  font-variant-numeric: tabular-nums;
+}
+
+@keyframes scorePulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+}
+
+/* ============================================================================
+   STATS GRID
+   ============================================================================ */
+
+.results-screen__stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  width: 100%;
+  max-width: 480px;
+}
+
+.results-screen__stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 16px 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+}
+
+.results-screen__stat-value {
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+}
+
+.results-screen__stat-label {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+}
+
+/* ============================================================================
+   SCORE BREAKDOWN
+   ============================================================================ */
+
+.results-screen__breakdown {
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+}
+
+.results-screen__breakdown-title {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  margin: 0 0 16px 0;
+  text-align: center;
+}
+
+.results-screen__breakdown-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.results-screen__breakdown-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+}
+
+.results-screen__breakdown-item span:first-child {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.results-screen__breakdown-item span:last-child {
+  color: #4caf50;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ============================================================================
+   ACTIONS
+   ============================================================================ */
+
+.results-screen__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 320px;
+  margin-top: auto;
+}
+
+.results-screen__btn {
+  padding: 16px 32px;
+  border: none;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.results-screen__btn--primary {
+  background: linear-gradient(135deg, #00d4ff 0%, #7b2cbf 100%);
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+}
+
+.results-screen__btn--primary:hover {
+  box-shadow: 0 6px 20px rgba(0, 212, 255, 0.4);
+  transform: translateY(-1px);
+}
+
+.results-screen__btn--secondary {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.results-screen__btn--secondary:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.results-screen__btn--tertiary {
+  background: transparent;
+  color: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.results-screen__btn--tertiary:hover {
+  color: rgba(255, 255, 255, 0.7);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.results-screen__btn:active {
+  transform: scale(0.98);
+}
+
+/* ============================================================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================================================ */
+
+@media (max-width: 480px) {
+  .results-screen__content {
+    padding: 16px;
+    gap: 16px;
+  }
+  
+  .results-screen__trophy {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .results-screen__stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  
+  .results-screen__stat {
+    padding: 12px 8px;
+  }
+  
+  .results-screen__breakdown {
+    padding: 16px;
+  }
+}
+
+@media (min-width: 768px) {
+  .results-screen__content {
+    padding: 40px;
+    gap: 32px;
+  }
+  
+  .results-screen__trophy {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .results-screen__stat-value {
+    font-size: 24px;
+  }
+  
+  .results-screen__stat-label {
+    font-size: 12px;
+  }
+}
+
+/* ============================================================================
+   REDUCED MOTION
+   ============================================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .results-screen__trophy,
+  .results-screen__score,
+  .results-screen__confetti-piece {
+    animation: none;
+  }
+}

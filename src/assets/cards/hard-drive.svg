@@ -1,0 +1,35 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024" role="img" aria-label="HARD DRIVE">
+  <defs>
+    <linearGradient id="bg" x1="120" y1="120" x2="904" y2="904" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#091426"/>
+      <stop offset="0.52" stop-color="#102647"/>
+      <stop offset="1" stop-color="#061123"/>
+    </linearGradient>
+    <linearGradient id="stroke" x1="120" y1="120" x2="904" y2="904" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#9FC4FF"/>
+      <stop offset="1" stop-color="#3749C5"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(290 280) rotate(90) scale(410 410)">
+      <stop offset="0" stop-color="#9FC4FF" stop-opacity="0.34"/>
+      <stop offset="1" stop-color="#3749C5" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect x="72" y="72" width="880" height="880" rx="188" fill="url(#bg)"/>
+  <rect x="72" y="72" width="880" height="880" rx="188" fill="url(#glow)"/>
+  <rect x="92" y="92" width="840" height="840" rx="168" stroke="url(#stroke)" stroke-width="10" fill="none" opacity="0.9"/>
+
+  <path d="M164 292H274M164 352H224M752 292H862M804 352H862M164 708H264M164 768H214M752 708H862M802 768H862" stroke="url(#stroke)" stroke-width="10" stroke-linecap="round" opacity="0.62"/>
+
+  <rect x="232" y="220" width="560" height="560" rx="118" fill="none" stroke="url(#stroke)" stroke-width="14"/>
+  <rect x="286" y="274" width="452" height="452" rx="84" fill="rgba(3, 16, 35, 0.62)" stroke="url(#stroke)" stroke-opacity="0.55" stroke-width="8"/>
+
+  <path d="M334 512H690M512 334V690" stroke="url(#stroke)" stroke-width="8" opacity="0.48"/>
+
+  <text x="512" y="548" text-anchor="middle" font-family="Arial, sans-serif" font-size="132" font-weight="700" fill="url(#stroke)" letter-spacing="2">
+    HDD
+  </text>
+  <text x="512" y="710" text-anchor="middle" font-family="Arial, sans-serif" font-size="56" font-weight="700" fill="#D9EEFF" letter-spacing="4" opacity="0.9">
+    HARD DRIVE
+  </text>
+</svg>

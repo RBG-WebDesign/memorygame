@@ -1,0 +1,301 @@
+/**
+ * HUD Component Styles
+ * Strong visual hierarchy with centered timer and grouped progress
+ */
+
+.hud {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px 20px 12px;
+  background: linear-gradient(
+    180deg,
+    rgba(2, 8, 25, 0.88) 0%,
+    rgba(2, 8, 30, 0.7) 100%
+  );
+  border-bottom: 1px solid rgba(120, 187, 255, 0.18);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.hud__top {
+  display: grid;
+  grid-template-columns: minmax(130px, 180px) 1fr minmax(120px, 150px);
+  align-items: center;
+  gap: 12px;
+}
+
+.hud__label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(223, 238, 255, 0.65);
+}
+
+.hud__score-section {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.hud__score {
+  font-family: 'Chakra Petch', 'Segoe UI', sans-serif;
+  font-size: clamp(2rem, 5vw, 3.3rem);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: 0.01em;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 0 26px rgba(62, 196, 255, 0.36);
+}
+
+.hud__combo {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #ff2d55 0%, #ff5a00 100%);
+  box-shadow: 0 4px 14px rgba(255, 48, 98, 0.35);
+}
+
+.hud__combo--animate {
+  animation: hudComboPulse 380ms ease-out;
+}
+
+@keyframes hudComboPulse {
+  0% { transform: scale(0.9); }
+  65% { transform: scale(1.12); }
+  100% { transform: scale(1); }
+}
+
+.hud__combo-multiplier {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.hud__combo-label {
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  opacity: 0.95;
+}
+
+.hud__center-pill {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 16px;
+  background: linear-gradient(180deg, rgba(9, 22, 47, 0.85) 0%, rgba(4, 12, 28, 0.75) 100%);
+  border: 1px solid rgba(138, 202, 255, 0.2);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.hud__timer-section {
+  display: flex;
+  justify-content: center;
+}
+
+.hud__preview-timer,
+.hud__game-timer {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.hud__timer-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: rgba(223, 238, 255, 0.6);
+}
+
+.hud__timer-value {
+  font-family: 'Chakra Petch', 'Segoe UI', sans-serif;
+  font-size: clamp(1.8rem, 4.5vw, 3.1rem);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  line-height: 1;
+  color: #ebf6ff;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 0 22px rgba(91, 197, 255, 0.35);
+}
+
+.hud__timer-value--preview {
+  color: #ff6f91;
+}
+
+.hud__game-timer--danger .hud__timer-value {
+  color: #ff6242;
+  text-shadow: 0 0 20px rgba(255, 88, 70, 0.55);
+  animation: timerDangerPulse 800ms ease-in-out infinite;
+}
+
+@keyframes timerDangerPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.06); }
+}
+
+.hud__progress-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.hud__progress-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.hud__progress-label,
+.hud__progress-count {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(223, 238, 255, 0.68);
+}
+
+.hud__progress-count {
+  font-variant-numeric: tabular-nums;
+}
+
+.hud__progress-bar {
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  overflow: hidden;
+}
+
+.hud__progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #00d4ff 0%, #3376ff 45%, #8b4dff 100%);
+  box-shadow: 0 0 16px rgba(50, 157, 255, 0.6);
+  transition: width 260ms ease-out;
+}
+
+.hud__level-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.hud__level-badge {
+  min-width: 72px;
+  min-height: 72px;
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  border: 1px solid rgba(154, 210, 255, 0.3);
+  background: linear-gradient(135deg, rgba(16, 107, 235, 0.85) 0%, rgba(78, 52, 210, 0.82) 100%);
+  box-shadow: 0 12px 25px rgba(14, 53, 120, 0.45);
+}
+
+.hud__level-label {
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  opacity: 0.8;
+}
+
+.hud__level-number {
+  font-family: 'Chakra Petch', 'Segoe UI', sans-serif;
+  font-size: clamp(1.6rem, 2.2vw, 2rem);
+  line-height: 1;
+  font-weight: 700;
+}
+
+.hud__difficulty {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  font-weight: 700;
+}
+
+.hud__bottom {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.hud__stat {
+  min-width: 88px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(170, 214, 255, 0.16);
+}
+
+.hud__stat-value {
+  font-family: 'Chakra Petch', 'Segoe UI', sans-serif;
+  font-size: 19px;
+  font-weight: 700;
+  line-height: 1.05;
+  font-variant-numeric: tabular-nums;
+}
+
+.hud__stat-label {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(223, 238, 255, 0.7);
+}
+
+@media (max-width: 860px) {
+  .hud {
+    gap: 10px;
+    padding: 10px 12px;
+  }
+
+  .hud__top {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .hud__score-section,
+  .hud__level-section {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .hud__score {
+    font-size: clamp(1.75rem, 8vw, 2.5rem);
+  }
+
+  .hud__center-pill {
+    padding: 10px 12px;
+  }
+
+  .hud__timer-value {
+    font-size: clamp(1.6rem, 8vw, 2.4rem);
+  }
+
+  .hud__level-badge {
+    min-width: 58px;
+    min-height: 58px;
+  }
+
+  .hud__bottom {
+    justify-content: stretch;
+  }
+
+  .hud__stat {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hud__combo--animate,
+  .hud__game-timer--danger .hud__timer-value {
+    animation: none;
+  }
+}
