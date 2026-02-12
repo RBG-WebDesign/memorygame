@@ -19,6 +19,8 @@ interface CardGridProps {
   onCardFlip: (cardId: string) => void;
   canFlip: boolean;
   columns?: number;
+  visualSimilarity?: number;
+  movementEnabled?: boolean;
   animationEnabled?: boolean;
 }
 
@@ -31,6 +33,8 @@ export const CardGrid = memo<CardGridProps>(({
   onCardFlip,
   canFlip,
   columns,
+  visualSimilarity = 0,
+  movementEnabled = false,
   animationEnabled = true,
 }) => {
   // Calculate optimal grid dimensions
@@ -59,11 +63,18 @@ export const CardGrid = memo<CardGridProps>(({
   const gridStyle = {
     '--grid-columns': gridDimensions.columns,
     '--grid-rows': gridDimensions.rows,
+    '--art-similarity': visualSimilarity.toFixed(2),
   } as React.CSSProperties;
+
+  const gridClasses = [
+    'card-grid',
+    visualSimilarity > 0.08 ? 'card-grid--high-similarity' : '',
+    movementEnabled ? 'card-grid--moving' : '',
+  ].filter(Boolean).join(' ');
 
   return (
     <div
-      className="card-grid"
+      className={gridClasses}
       style={gridStyle}
       role="grid"
       aria-label={`Memory game grid with ${cards.length} cards`}

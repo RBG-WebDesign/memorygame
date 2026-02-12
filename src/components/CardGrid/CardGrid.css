@@ -173,6 +173,30 @@
   pointer-events: none;
 }
 
+.card-grid--high-similarity .card__art {
+  filter:
+    saturate(calc(1 - var(--art-similarity, 0) * 0.72))
+    contrast(calc(1 - var(--art-similarity, 0) * 0.24))
+    brightness(calc(1 - var(--art-similarity, 0) * 0.05));
+}
+
+.card-grid--moving .card-grid__cell {
+  animation-name: cellEntrance, subtleDrift;
+  animation-duration: 0.4s, 5.6s;
+  animation-timing-function: ease-out, ease-in-out;
+  animation-iteration-count: 1, infinite;
+  animation-direction: normal, alternate;
+}
+
+@keyframes subtleDrift {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(0, -3px, 0);
+  }
+}
+
 /* ============================================================================
    REDUCED MOTION
    ============================================================================ */

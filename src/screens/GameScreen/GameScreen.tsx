@@ -14,7 +14,6 @@ import {
 } from 'react';
 import { useGameStore, selectCurrentLevelConfig } from '@/store';
 import { CardGrid, HUD } from '@/components';
-import { CONSTANTS } from '@/types';
 import './GameScreen.css';
 
 export const GameScreen = memo(() => {
@@ -26,9 +25,13 @@ export const GameScreen = memo(() => {
     comboMultiplier,
     elapsedTime,
     previewTimeRemaining,
+    remainingMistakes,
     matchCount,
     moveCount,
     matchedCards,
+    currentPhase,
+    totalPhases,
+    failedReason,
     isInteractionLocked,
     lastMatchId,
     matchEffectNonce,
@@ -201,6 +204,9 @@ export const GameScreen = memo(() => {
             comboMultiplier={comboMultiplier}
             matchCount={matchCount}
             moveCount={moveCount}
+            remainingMistakes={remainingMistakes}
+            currentPhase={currentPhase}
+            totalPhases={totalPhases}
             matchedCards={matchedCards.length}
             totalCards={totalCards}
             showComboAnimation={showComboAnimation}
@@ -295,6 +301,8 @@ export const GameScreen = memo(() => {
             onCardFlip={handleCardFlip}
             canFlip={!isInteractionLocked && gameStatus === 'playing'}
             columns={levelConfig?.gridColumns}
+            visualSimilarity={levelConfig?.visualSimilarity ?? 0}
+            movementEnabled={levelConfig?.movementEnabled ?? false}
             animationEnabled={true}
           />
         </div>
@@ -328,7 +336,28 @@ export const GameScreen = memo(() => {
               </div>
               <div className="game-screen__level-modal-actions">
                 <button className="game-screen__btn game-screen__btn--primary" onClick={handleNextLevel}>
-                  {currentLevel >= CONSTANTS.MAX_LEVEL ? 'View Results' : 'Next Level'}
+                  Next Level
+                </button>
+                <button className="game-screen__btn game-screen__btn--ghost" onClick={handleReturnToMenu}>
+                  Main Menu
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {gameStatus === 'levelFailed' && (
+          <div className="game-screen__level-modal" role="dialog" aria-modal="true" aria-label="Level failed">
+            <div className="game-screen__level-modal-card">
+              <div className="game-screen__level-modal-title">LEVEL FAILED</div>
+              <div className="game-screen__level-modal-meta">
+                <span>
+                  {failedReason === 'time' ? 'Time limit reached' : 'Mistake limit reached'}
+                </span>
+              </div>
+              <div className="game-screen__level-modal-actions">
+                <button className="game-screen__btn game-screen__btn--primary" onClick={handleRestartLevel}>
+                  Retry Level
                 </button>
                 <button className="game-screen__btn game-screen__btn--ghost" onClick={handleReturnToMenu}>
                   Main Menu

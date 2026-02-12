@@ -31,6 +31,7 @@ export type GameStatus =
   | 'playing' 
   | 'resolving' 
   | 'levelComplete' 
+  | 'levelFailed'
   | 'gameComplete' 
   | 'paused';
 
@@ -55,19 +56,24 @@ export interface GameState {
   moveCount: number;
   matchCount: number;
   mismatchCount: number;
+  remainingMistakes: number | null;
   
   // Timing
   startTime: number | null;
   elapsedTime: number;
   previewTimeRemaining: number;
+  shuffleTimeRemaining: number | null;
   
   // Game status
   gameStatus: GameStatus;
   currentScreen: ScreenType;
   isInteractionLocked: boolean;
+  failedReason: 'time' | 'mistakes' | null;
   
   // Level progression
   completedLevels: number[];
+  currentPhase: number;
+  totalPhases: number;
   
   // Session stats
   sessionStats: SessionStats;
@@ -87,10 +93,17 @@ export interface SessionStats {
 
 export interface LevelConfig {
   level: number;
+  boardSize: 12 | 16 | 20 | 24;
   pairCount: number;
   totalCards: number;
   previewDuration: number; // milliseconds
   timeLimit: number | null; // null = no limit
+  mismatchRevealDuration: number; // milliseconds
+  mistakeLimit: number | null;
+  shuffleIntervalMs: number | null;
+  movementEnabled: boolean;
+  visualSimilarity: number; // 0..1, used for art filtering
+  phases: number;
   gridColumns: number;
   gridRows: number;
   hintCount: number;
@@ -228,7 +241,7 @@ export const CONSTANTS = {
   LEVEL_TRANSITION_DELAY: 1500,
   
   // Game limits
-  MAX_LEVEL: 8,
+  MAX_LEVEL: 1000000,
   MIN_LEVEL: 1,
   LEADERBOARD_MAX_ENTRIES: 100,
   LEADERBOARD_DISPLAY_COUNT: 10,

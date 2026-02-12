@@ -22,6 +22,9 @@ interface HUDProps {
   comboMultiplier: number;
   matchCount: number;
   moveCount: number;
+  remainingMistakes: number | null;
+  currentPhase: number;
+  totalPhases: number;
   matchedCards: number;
   totalCards: number;
   showComboAnimation: boolean;
@@ -41,6 +44,9 @@ export const HUD = memo<HUDProps>(({
   comboMultiplier,
   matchCount,
   moveCount,
+  remainingMistakes,
+  currentPhase,
+  totalPhases,
   matchedCards,
   totalCards,
   showComboAnimation,
@@ -199,6 +205,16 @@ export const HUD = memo<HUDProps>(({
           <span className="hud__stat-value">{accuracy}%</span>
           <span className="hud__stat-label">Accuracy</span>
         </div>
+        <div className="hud__stat">
+          <span className="hud__stat-value">{currentPhase}/{totalPhases}</span>
+          <span className="hud__stat-label">Phase</span>
+        </div>
+        {remainingMistakes != null && (
+          <div className="hud__stat">
+            <span className="hud__stat-value">{remainingMistakes}</span>
+            <span className="hud__stat-label">Mistakes Left</span>
+          </div>
+        )}
       </div>
     </div>
   );

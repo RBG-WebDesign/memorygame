@@ -31,13 +31,18 @@ export const initializeGame = (): Partial<GameState> => ({
   moveCount: 0,
   matchCount: 0,
   mismatchCount: 0,
+  remainingMistakes: null,
   startTime: null,
   elapsedTime: 0,
   previewTimeRemaining: 0,
+  shuffleTimeRemaining: null,
   gameStatus: 'idle',
   currentScreen: 'start',
   isInteractionLocked: false,
+  failedReason: null,
   completedLevels: [],
+  currentPhase: 1,
+  totalPhases: 1,
   sessionStats: {
     totalMatches: 0,
     totalMismatches: 0,
@@ -56,23 +61,26 @@ export const initializeLevel = (level: number): Partial<GameState> => {
     ...card,
     isFlipped: true,
   }));
-  const previewDuration = calculatePreviewDuration(config.pairCount);
-
   return {
     currentLevel: level,
     cards,
     flippedCards: [],
     matchedCards: [],
-    previewTimeRemaining: previewDuration,
+    previewTimeRemaining: config.previewDuration,
     elapsedTime: 0,
     startTime: null,
     moveCount: 0,
     matchCount: 0,
     mismatchCount: 0,
+    remainingMistakes: config.mistakeLimit,
+    shuffleTimeRemaining: config.shuffleIntervalMs,
     comboMultiplier: 1,
     consecutiveMatches: 0,
     gameStatus: 'preview',
     isInteractionLocked: true,
+    failedReason: null,
+    currentPhase: 1,
+    totalPhases: config.phases,
   };
 };
 
@@ -81,7 +89,6 @@ export const initializeLevel = (level: number): Partial<GameState> => {
  */
 export const startPreview = (state: GameState): Partial<GameState> => {
   const config = getLevelConfig(state.currentLevel);
-  const previewDuration = calculatePreviewDuration(config.pairCount);
 
   return {
     cards: state.cards.map(card => ({
@@ -89,7 +96,7 @@ export const startPreview = (state: GameState): Partial<GameState> => {
       isFlipped: true,
     })),
     flippedCards: [],
-    previewTimeRemaining: previewDuration,
+    previewTimeRemaining: config.previewDuration,
     startTime: null,
     elapsedTime: 0,
     gameStatus: 'preview',
@@ -108,6 +115,7 @@ export const endPreview = (state: GameState): Partial<GameState> => ({
   gameStatus: 'playing',
   isInteractionLocked: false,
   startTime: Date.now(),
+  shuffleTimeRemaining: getLevelConfig(state.currentLevel).shuffleIntervalMs,
 });
 
 /**
@@ -251,6 +259,9 @@ export const handleMismatch = (state: GameState): Partial<GameState> => {
     comboMultiplier: resetCombo.multiplier,
     consecutiveMatches: resetCombo.consecutiveMatches,
     mismatchCount: state.mismatchCount + 1,
+    remainingMistakes: state.remainingMistakes == null
+      ? null
+      : Math.max(0, state.remainingMistakes - 1),
     sessionStats: {
       ...state.sessionStats,
       totalMismatches: state.sessionStats.totalMismatches + 1,
@@ -287,10 +298,34 @@ export const completeLevel = (state: GameState): Partial<GameState> => {
 };
 
 /**
+ * Start next phase for multi-phase rounds on the same level.
+ */
+export const startNextPhase = (state: GameState): Partial<GameState> => {
+  const config = getLevelConfig(state.currentLevel);
+  const cards = generateCardDeck(config.pairCount).map((card) => ({
+    ...card,
+    isFlipped: true,
+  }));
+
+  return {
+    cards,
+    flippedCards: [],
+    matchedCards: [],
+    previewTimeRemaining: config.previewDuration,
+    gameStatus: 'preview',
+    isInteractionLocked: true,
+    currentPhase: Math.min(state.currentPhase + 1, state.totalPhases),
+    shuffleTimeRemaining: config.shuffleIntervalMs,
+    failedReason: null,
+  };
+};
+
+/**
  * Check if game is complete (all levels finished)
  */
 export const isGameComplete = (state: GameState): boolean => {
-  return state.currentLevel >= CONSTANTS.MAX_LEVEL;
+  void state;
+  return false;
 };
 
 /**
@@ -308,11 +343,6 @@ export const completeGame = (_state: GameState): Partial<GameState> => {
  */
 export const advanceToNextLevel = (state: GameState): Partial<GameState> | null => {
   const nextLevel = state.currentLevel + 1;
-
-  if (nextLevel > CONSTANTS.MAX_LEVEL) {
-    return completeGame(state);
-  }
-
   return initializeLevel(nextLevel);
 };
 
@@ -354,6 +384,62 @@ export const updatePreviewTimer = (state: GameState, deltaMs: number): Partial<G
 
   return {
     previewTimeRemaining: newTime,
+  };
+};
+
+const shuffleArray = <T>(array: T[]): T[] => {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+};
+
+/**
+ * Shuffle board positions of unmatched cards to add mechanical difficulty.
+ */
+export const shuffleBoardCards = (state: GameState): Partial<GameState> => {
+  const shuffled = shuffleArray(state.cards);
+  return {
+    cards: shuffled,
+  };
+};
+
+/**
+ * Apply ongoing playing modifiers (time limit + shuffle timer).
+ */
+export const applyPlayingModifiers = (state: GameState, deltaMs: number): Partial<GameState> => {
+  if (state.gameStatus !== 'playing') return {};
+
+  const config = getLevelConfig(state.currentLevel);
+  const elapsedTime = state.startTime ? Date.now() - state.startTime : state.elapsedTime;
+
+  if (config.timeLimit && elapsedTime >= config.timeLimit * 1000) {
+    return {
+      elapsedTime,
+      gameStatus: 'levelFailed',
+      isInteractionLocked: true,
+      failedReason: 'time',
+    };
+  }
+
+  if (!config.shuffleIntervalMs || state.isInteractionLocked || state.flippedCards.length > 0) {
+    return { elapsedTime };
+  }
+
+  const remaining = (state.shuffleTimeRemaining ?? config.shuffleIntervalMs) - deltaMs;
+  if (remaining > 0) {
+    return {
+      elapsedTime,
+      shuffleTimeRemaining: remaining,
+    };
+  }
+
+  return {
+    elapsedTime,
+    ...shuffleBoardCards(state),
+    shuffleTimeRemaining: config.shuffleIntervalMs,
   };
 };
 

@@ -1,183 +1,120 @@
 /**
- * Level Configuration System
- * Defines 8 progressive difficulty levels for the memory flip game
+ * Infinite Level Configuration System
+ * Keeps board sizes readable (12/16/20/24 cards) and scales difficulty via mechanics.
  */
 
 import { LevelConfig } from '@/types';
 
-/**
- * Level configurations from 1-8
- * Progressive difficulty through card count, preview time, and grid complexity
- */
-export const LEVELS: LevelConfig[] = [
-  {
-    level: 1,
-    pairCount: 4,
-    totalCards: 8,
-    previewDuration: 3000,
-    timeLimit: null,
-    gridColumns: 4,
-    gridRows: 2,
-    hintCount: 3,
-    difficulty: 'easy',
-  },
-  {
-    level: 2,
-    pairCount: 6,
-    totalCards: 12,
-    previewDuration: 3500,
-    timeLimit: null,
-    gridColumns: 4,
-    gridRows: 3,
-    hintCount: 3,
-    difficulty: 'easy',
-  },
-  {
-    level: 3,
-    pairCount: 8,
-    totalCards: 16,
-    previewDuration: 4000,
-    timeLimit: null,
-    gridColumns: 4,
-    gridRows: 4,
-    hintCount: 2,
-    difficulty: 'medium',
-  },
-  {
-    level: 4,
-    pairCount: 10,
-    totalCards: 20,
-    previewDuration: 4500,
-    timeLimit: 120,
-    gridColumns: 5,
-    gridRows: 4,
-    hintCount: 2,
-    difficulty: 'medium',
-  },
-  {
-    level: 5,
-    pairCount: 12,
-    totalCards: 24,
-    previewDuration: 5000,
-    timeLimit: 150,
-    gridColumns: 6,
-    gridRows: 4,
-    hintCount: 2,
-    difficulty: 'medium',
-  },
-  {
-    level: 6,
-    pairCount: 15,
-    totalCards: 30,
-    previewDuration: 5500,
-    timeLimit: 180,
-    gridColumns: 6,
-    gridRows: 5,
-    hintCount: 1,
-    difficulty: 'hard',
-  },
-  {
-    level: 7,
-    pairCount: 18,
-    totalCards: 36,
-    previewDuration: 6000,
-    timeLimit: 210,
-    gridColumns: 6,
-    gridRows: 6,
-    hintCount: 1,
-    difficulty: 'hard',
-  },
-  {
-    level: 8,
-    pairCount: 24,
-    totalCards: 48,
-    previewDuration: 7000,
-    timeLimit: 240,
-    gridColumns: 6,
-    gridRows: 8,
-    hintCount: 0,
-    difficulty: 'expert',
-  },
-];
+const BOARD_SEQUENCE: Array<12 | 16 | 20 | 24> = [12, 16, 20, 24];
 
-/**
- * Get level configuration by level number
- */
+const BOARD_LAYOUTS: Record<12 | 16 | 20 | 24, { columns: number; rows: number }> = {
+  12: { columns: 4, rows: 3 },
+  16: { columns: 4, rows: 4 },
+  20: { columns: 5, rows: 4 },
+  24: { columns: 6, rows: 4 },
+};
+
+const clamp = (value: number, min: number, max: number): number =>
+  Math.max(min, Math.min(max, value));
+
+const createSeededRandom = (seed: number): (() => number) => {
+  let t = seed + 0x6d2b79f5;
+  return () => {
+    t += 0x6d2b79f5;
+    let x = t;
+    x = Math.imul(x ^ (x >>> 15), x | 1);
+    x ^= x + Math.imul(x ^ (x >>> 7), x | 61);
+    return ((x ^ (x >>> 14)) >>> 0) / 4294967296;
+  };
+};
+
+const pickBoardSize = (level: number): 12 | 16 | 20 | 24 => {
+  // Every block shifts difficulty upward while still procedurally varying board size.
+  const block = Math.floor((level - 1) / 8);
+  const baseIndex = clamp(block, 0, BOARD_SEQUENCE.length - 1);
+  const random = createSeededRandom(level * 97);
+  const jitter = random() > 0.7 ? -1 : random() < 0.2 ? 1 : 0;
+  const index = clamp(baseIndex + jitter, 0, BOARD_SEQUENCE.length - 1);
+  return BOARD_SEQUENCE[index];
+};
+
+const getDifficultyTier = (level: number): LevelConfig['difficulty'] => {
+  if (level <= 8) return 'easy';
+  if (level <= 20) return 'medium';
+  if (level <= 45) return 'hard';
+  return 'expert';
+};
+
 export const getLevelConfig = (level: number): LevelConfig => {
-  const config = LEVELS.find(l => l.level === level);
-  if (!config) {
-    throw new Error(`Invalid level: ${level}`);
-  }
-  return config;
+  const safeLevel = Math.max(1, level);
+  const boardSize = pickBoardSize(safeLevel);
+  const pairCount = boardSize / 2;
+  const layout = BOARD_LAYOUTS[boardSize];
+  const random = createSeededRandom(safeLevel * 193);
+
+  const previewBase = 6200 - safeLevel * 120;
+  const previewDuration = Math.round(clamp(previewBase + (random() - 0.5) * 400, 1400, 6200));
+
+  const mismatchRevealDuration = Math.round(clamp(900 - safeLevel * 12, 280, 900));
+
+  const hasTimeLimit = safeLevel >= 6;
+  const timeLimit = hasTimeLimit
+    ? Math.round(clamp(70 + pairCount * 7 - safeLevel * 0.8 + (random() - 0.5) * 8, 20, 210))
+    : null;
+
+  const mistakeLimit = safeLevel >= 10 ? Math.max(2, Math.round(8 - safeLevel * 0.06)) : null;
+
+  const shuffleIntervalMs = safeLevel >= 18
+    ? Math.round(clamp(17000 - safeLevel * 150, 5000, 17000))
+    : null;
+
+  const movementEnabled = safeLevel >= 24;
+  const visualSimilarity = clamp((safeLevel - 8) / 160, 0, 0.28);
+  const phases = safeLevel >= 30 && safeLevel % 7 === 0 ? 2 : 1;
+
+  return {
+    level: safeLevel,
+    boardSize,
+    pairCount,
+    totalCards: boardSize,
+    previewDuration,
+    timeLimit,
+    mismatchRevealDuration,
+    mistakeLimit,
+    shuffleIntervalMs,
+    movementEnabled,
+    visualSimilarity,
+    phases,
+    gridColumns: layout.columns,
+    gridRows: layout.rows,
+    hintCount: safeLevel <= 5 ? 2 : 0,
+    difficulty: getDifficultyTier(safeLevel),
+  };
 };
 
-/**
- * Get the maximum level available
- */
-export const getMaxLevel = (): number => LEVELS.length;
+export const getMaxLevel = (): number => Number.MAX_SAFE_INTEGER;
 
-/**
- * Check if a level exists
- */
-export const isValidLevel = (level: number): boolean => {
-  return level >= 1 && level <= LEVELS.length;
-};
+export const isValidLevel = (level: number): boolean => level >= 1;
 
-/**
- * Get next level number (returns null if at max level)
- */
-export const getNextLevel = (currentLevel: number): number | null => {
-  const next = currentLevel + 1;
-  return isValidLevel(next) ? next : null;
-};
+export const getNextLevel = (currentLevel: number): number => currentLevel + 1;
 
-/**
- * Calculate grid dimensions based on card count
- * Optimizes for tablet aspect ratio (4:3 or 16:9)
- */
 export const calculateGridDimensions = (
-  cardCount: number,
-  maxColumns: number = 6
+  cardCount: number
 ): { columns: number; rows: number } => {
-  // Find optimal column/row ratio close to 4:3 for tablets
-  let bestColumns = 4;
-  let bestRows = Math.ceil(cardCount / 4);
-  let bestRatio = Infinity;
-
-  for (let cols = 2; cols <= maxColumns; cols++) {
-    const rows = Math.ceil(cardCount / cols);
-    const ratio = Math.abs(cols / rows - 4 / 3);
-    
-    // Prefer layouts where all cells are filled
-    const isComplete = cols * rows === cardCount;
-    const score = ratio + (isComplete ? 0 : 0.5);
-    
-    if (score < bestRatio) {
-      bestRatio = score;
-      bestColumns = cols;
-      bestRows = rows;
-    }
-  }
-
-  return { columns: bestColumns, rows: bestRows };
+  const boardSize = BOARD_SEQUENCE.find((size) => size === cardCount) ?? 24;
+  return BOARD_LAYOUTS[boardSize];
 };
 
-/**
- * Get difficulty color for UI theming
- */
 export const getDifficultyColor = (difficulty: LevelConfig['difficulty']): string => {
   const colors = {
-    easy: '#4CAF50',
-    medium: '#FF9800',
-    hard: '#F44336',
-    expert: '#9C27B0',
+    easy: '#53d769',
+    medium: '#ffb340',
+    hard: '#ff6b5b',
+    expert: '#ff4de1',
   };
   return colors[difficulty];
 };
 
-/**
- * Get difficulty label
- */
 export const getDifficultyLabel = (difficulty: LevelConfig['difficulty']): string => {
   const labels = {
     easy: 'EASY',
@@ -187,3 +124,4 @@ export const getDifficultyLabel = (difficulty: LevelConfig['difficulty']): strin
   };
   return labels[difficulty];
 };
+

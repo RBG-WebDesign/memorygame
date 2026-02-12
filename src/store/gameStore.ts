@@ -23,11 +23,12 @@ import {
   handleMismatch,
   isLevelComplete,
   completeLevel,
+  startNextPhase,
   advanceToNextLevel,
-  isGameComplete,
   completeGame,
   getGameStats,
   updateElapsedTime,
+  applyPlayingModifiers,
   updatePreviewTimer,
   resetLevel,
   getLevelConfig,
@@ -201,12 +202,26 @@ export const useGameStore = create<GameStoreState & GameStoreActions>()(
 
         const matchResult = checkForMatch(currentState);
         if (!matchResult.isMatch || !matchResult.pairId) {
-          // Guard: never trigger match effects for invalid/non-match resolutions
-          set((state) => {
-            const mismatchState = handleMismatch(currentState);
-            Object.assign(state, mismatchState);
-            state.lastMatchId = null;
-          });
+          const config = getLevelConfig(currentState.currentLevel);
+          const mismatchDelay = config.mismatchRevealDuration;
+
+          setTimeout(() => {
+            const latest = get();
+            if (latest.gameStatus !== 'resolving') return;
+
+            set((state) => {
+              const mismatchState = handleMismatch(latest);
+              Object.assign(state, mismatchState);
+              state.lastMatchId = null;
+
+              const limit = getLevelConfig(state.currentLevel).mistakeLimit;
+              if (limit != null && state.mismatchCount >= limit) {
+                state.gameStatus = 'levelFailed';
+                state.isInteractionLocked = true;
+                state.failedReason = 'mistakes';
+              }
+            });
+          }, mismatchDelay);
           return;
         }
 
@@ -245,18 +260,23 @@ export const useGameStore = create<GameStoreState & GameStoreActions>()(
       },
 
       completeCurrentLevel: () => {
+        const currentState = get();
+        if (currentState.currentPhase < currentState.totalPhases) {
+          set((state) => {
+            const phaseState = startNextPhase(currentState);
+            Object.assign(state, phaseState);
+            state.lastMatchId = null;
+            state.matchEffectNonce = 0;
+            state.comboDisplay = 0;
+            state.showComboAnimation = false;
+          });
+          return;
+        }
+
         set((state) => {
           const levelCompleteState = completeLevel(get());
           Object.assign(state, levelCompleteState);
         });
-
-        // Check if game is complete
-        setTimeout(() => {
-          const currentState = get();
-          if (isGameComplete(currentState)) {
-            get().endGame();
-          }
-        }, CONSTANTS.LEVEL_TRANSITION_DELAY);
       },
 
       goToNextLevel: () => {
@@ -309,7 +329,8 @@ export const useGameStore = create<GameStoreState & GameStoreActions>()(
         } else if (currentState.gameStatus === 'playing') {
           set((state) => {
             const timeState = updateElapsedTime(currentState);
-            Object.assign(state, timeState);
+            const modifierState = applyPlayingModifiers(currentState, deltaMs);
+            Object.assign(state, timeState, modifierState);
           });
         }
       },
